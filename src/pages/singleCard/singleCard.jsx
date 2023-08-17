@@ -75,10 +75,10 @@ export const SingleCard = () => {
     setCount(aaa);
   }
 
-  let selectorHeart =
-    useSelector((state) => state.commonInfo.heart) !== null
-      ? heartProducts
-      : [];
+  // let selectorHeart =
+  //   useSelector((state) => state.commonInfo.heart) !== null
+  //     ? heartProducts
+  //     : [];
 
   return (
     <SingleCardWrapper>
@@ -152,7 +152,7 @@ export const SingleCard = () => {
         </SingleCardInInternalWrapper>
       </SingleCardInternalWrapper>
 
-      <ExampleApp/>
+      <ExampleApp />
     </SingleCardWrapper>
   );
 };
