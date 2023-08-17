@@ -42,7 +42,7 @@ export const SingleCard = () => {
 
   const basketProducts =
     JSON.parse(window.localStorage.getItem("basket")) || [];
-  const heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
+  // const heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
 
   let selectorBasket =
     useSelector((state) => state.commonInfo.basket) !== null
