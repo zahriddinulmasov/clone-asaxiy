@@ -4,6 +4,7 @@ import { AppRoutes } from "../../routes/routes";
 import "./app.css";
 
 function App() {
+
   return (
     <>
       <ApiCategory />
@@ -11,6 +12,7 @@ function App() {
 
       <div className="continer">
         <ScrollsToTop>
+
           <AppRoutes />
         </ScrollsToTop>
       </div>

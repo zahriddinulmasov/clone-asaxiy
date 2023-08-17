@@ -26,7 +26,6 @@ import { Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CardBtn } from "../../components/cardBtn/cardBtn";
 import { useState } from "react";
-import { ExampleApp } from "../../API/api";
 
 const style = {
   height: "20px",
@@ -151,8 +150,6 @@ export const SingleCard = () => {
           </SinglecardRight>
         </SingleCardInInternalWrapper>
       </SingleCardInternalWrapper>
-
-      <ExampleApp />
     </SingleCardWrapper>
   );
 };
