@@ -27,24 +27,24 @@ export const FavoriteCart = () => {
   const dispatch = useDispatch();
 
   let basketProducts = JSON.parse(window.localStorage.getItem("basket")) || [];
-  const heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
+  // const heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
 
   let selectorBasket =
     useSelector((state) => state.commonInfo.basket) !== null
       ? basketProducts
       : [];
 
-  let totalPriceBasket = selectorBasket.reduce(
-    (acc, item) => acc + item.sales_price,
-    0
-  );
+  // let totalPriceBasket = selectorBasket.reduce(
+  //   (acc, item) => acc + item.sales_price,
+  //   0
+  // );
 
-  let totalPrice = [...totalPriceBasket.toString()];
-  let commonPrice = [
-    totalPrice.slice(0, totalPrice.length - 6).join(""),
-    totalPrice.slice(totalPrice.length - 6, totalPrice.length - 3).join(""),
-    totalPrice.slice(totalPrice.length - 3, totalPrice.length).join(""),
-  ];
+  // let totalPrice = [...totalPriceBasket.toString()];
+  // let commonPrice = [
+  //   totalPrice.slice(0, totalPrice.length - 6).join(""),
+  //   totalPrice.slice(totalPrice.length - 6, totalPrice.length - 3).join(""),
+  //   totalPrice.slice(totalPrice.length - 3, totalPrice.length).join(""),
+  // ];
 
   function handleDelete(evt) {
     const currentProduct = selectorBasket.find(
@@ -62,15 +62,15 @@ export const FavoriteCart = () => {
     }
   }
 
-  let selectorHeart =
-    useSelector((state) => state.commonInfo.heart) !== null
-      ? heartProducts
-      : [];
+  // let selectorHeart =
+  //   useSelector((state) => state.commonInfo.heart) !== null
+  //     ? heartProducts
+  //     : [];
 
-  let totalPriceHeart = selectorHeart.reduce(
-    (acc, item) => acc + item.sales_price,
-    0
-  );
+  // let totalPriceHeart = selectorHeart.reduce(
+  //   (acc, item) => acc + item.sales_price,
+  //   0
+  // );
 
   return (
     <FavoriteWrapper>
