@@ -11,6 +11,7 @@ const initialState = {
   singleData: {},
   basket: [],
   heart: [],
+  addBasket: null,
 };
 
 export const { reducer: mainInfoReducer, actions: mainInfoActions } =
@@ -39,5 +40,8 @@ export const { reducer: mainInfoReducer, actions: mainInfoActions } =
       infoHeart(state, action) {
         state.heart = action.payload;
       },
+      addedBasket(state, action) {
+        state.addBasket = action.payload
+      }
     },
   });

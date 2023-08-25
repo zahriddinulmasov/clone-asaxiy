@@ -4,7 +4,7 @@ export const BtnWrapper = styled.button`
   margin-right: ${({ style }) =>
     style.marginRight ? `${style.marginRight}` : 0};
   margin-top: 12px;
-  padding: 16px 20px;
+  padding: ${({style}) => style.padding || "16px 20px"};
   font-size: 13px;
   max-width: ${({style}) => style.maxWidth ? style.maxWidth : "213px"};
   width: 100%;

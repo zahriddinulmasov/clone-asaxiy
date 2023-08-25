@@ -3,8 +3,8 @@ import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export const Wrapper = styled.div`
-  margin: 0 -15px;
-  padding: 30px 15px 30px 15px;
+  margin: 0 auto;
+  padding: 80px 15px 30px 15px;
   max-width: 1300px;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);

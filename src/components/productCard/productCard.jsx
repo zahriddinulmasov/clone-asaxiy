@@ -45,6 +45,10 @@ function ProductCard({ props }) {
   const img = product_image[0]?.image;
 
   let selector = useSelector((state) => state.commonInfo.data);
+  let selectorSelected =
+    useSelector((state) => state.commonInfo.basket) || basketArr;
+
+  // console.log(basketArr);
 
   function handleCard() {
     navigate(`/products/${slug}`);
@@ -54,43 +58,43 @@ function ProductCard({ props }) {
     let count1 = 0;
     const currentData = selector.find((item) => item.id === evt.target.id * 1);
 
-    basketArr.forEach((item) => {
+    selectorSelected.forEach((item) => {
       if (item.id === currentData.id) {
         return count1++;
       }
     });
 
     if (count1 === 0) {
-      basketArr = [currentData, ...basketArr];
-      dispatch(mainInfoActions.infoBasket(basketArr));
-      window.localStorage.setItem("basket", JSON.stringify(basketArr));
+      selectorSelected = [currentData, ...selectorSelected];
+      dispatch(mainInfoActions.infoBasket(selectorSelected));
+      window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
     } else {
-      const currentBasketArr = basketArr.filter(
+      const currentSelectorSelected = selectorSelected.filter(
         (item) => item.id !== currentData.id
-        );
+      );
 
-        basketArr = [...currentBasketArr];
-        dispatch(mainInfoActions.infoBasket(basketArr));
-        window.localStorage.setItem("basket", JSON.stringify(basketArr));
+      selectorSelected = [...currentSelectorSelected];
+      dispatch(mainInfoActions.infoBasket(selectorSelected));
+      window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+    }
+  };
+
+  function handleHeart(evt) {
+    const currentData = selector.find((item) => item.id === evt.target.id * 1);
+
+    let count2 = 0;
+    heartArr.forEach((item) => {
+      if (item.id === currentData.id) {
+        return count2++;
       }
-    };
+    });
 
-    function handleHeart(evt) {
-      const currentData = selector.find((item) => item.id === evt.target.id * 1);
-
-      let count2 = 0;
-      heartArr.forEach((item) => {
-        if (item.id === currentData.id) {
-          return count2++;
-        }
-      });
-
-      if (count2 === 0) {
-        heartArr = [currentData, ...heartArr];
-        dispatch(mainInfoActions.infoHeart(heartArr));
-        window.localStorage.setItem("heart", JSON.stringify(heartArr));
-      } else {
-        const currentHeartArr = heartArr.filter(
+    if (count2 === 0) {
+      heartArr = [currentData, ...heartArr];
+      dispatch(mainInfoActions.infoHeart(heartArr));
+      window.localStorage.setItem("heart", JSON.stringify(heartArr));
+    } else {
+      const currentHeartArr = heartArr.filter(
         (item) => item.id !== currentData.id
       );
 

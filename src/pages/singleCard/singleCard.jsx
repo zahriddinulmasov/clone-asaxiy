@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SingleCardBrend,
   SingleCardBtnContent,
@@ -20,12 +20,13 @@ import {
   SingleCardRightTitle,
   SingleCardTitle,
   SingleCardWrapper,
-  SinglecardRight,
+  SingleCardRightWrapper,
 } from "./singleCard.styles";
+import { CardBtn } from "../../components/cardBtn/cardBtn";
 import { Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CardBtn } from "../../components/cardBtn/cardBtn";
-import { useState } from "react";
+import { mainInfoActions } from "../../store/commonData";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   height: "20px",
@@ -36,12 +37,10 @@ const style = {
 };
 
 export const SingleCard = () => {
-  const [count, setCount] = useState([]);
-  console.log(count);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
 
-  const basketProducts =
-    JSON.parse(window.localStorage.getItem("basket")) || [];
-  // const heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
+  let basketProducts = JSON.parse(window.localStorage.getItem("basket")) || [];
 
   let selectorBasket =
     useSelector((state) => state.commonInfo.basket) !== null
@@ -60,24 +59,29 @@ export const SingleCard = () => {
     totalPrice.slice(totalPrice.length - 3, totalPrice.length).join(""),
   ];
 
-  let aaa;
-  function handleIncrement(evt) {
-    const selectedData = selectorBasket.find(
+  function handleDelete(evt) {
+    const currentProduct = selectorBasket.find(
       (item) => item.id === evt.target.id * 1
     );
+    const deletedCard = selectorBasket.filter(
+      (item) => item.id !== currentProduct.id
+    );
 
-    aaa = {
-      name: selectedData.name,
-      total: count + 1,
-    };
-    console.log(selectedData);
-    setCount(aaa);
+    if (currentProduct) {
+      selectorBasket = [...deletedCard];
+
+      window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
+      dispatch(mainInfoActions.infoBasket(...selectorBasket));
+
+      if (selectorBasket.length === 0) window.localStorage.clear("basket");
+    }
   }
 
-  // let selectorHeart =
-  //   useSelector((state) => state.commonInfo.heart) !== null
-  //     ? heartProducts
-  //     : [];
+  function clicktedCard(evt) {
+    const faundData = selectorBasket.find(item => item.id === evt.target.id * 1)
+    console.log(faundData);
+    navigate(`/products/${faundData.slug}`)
+  }
 
   return (
     <SingleCardWrapper>
@@ -88,31 +92,28 @@ export const SingleCard = () => {
           <Box sx={{ width: "75%" }}>
             {selectorBasket.map((item) => (
               <SingleCardLeft key={item.id}>
-                <SingleCardLeftLeft>
-                  <SingleCardImgWrapper>
+                <SingleCardLeftLeft onClick={clicktedCard} id={item.id}>
+                  <SingleCardImgWrapper id={item.id}>
                     <SingleCardImg
+                      id={item.id}
                       src={item.product_image[0].image}
                       height={104}
                     />
                   </SingleCardImgWrapper>
 
-                  <Box>
-                    <SingleCardLeftTitle>{item.name}</SingleCardLeftTitle>
-                    <SingleCardBrend>{item.brand}</SingleCardBrend>
+                  <Box  id={item.id}>
+                    <SingleCardLeftTitle id={item.id}>
+                      {item.name}
+                    </SingleCardLeftTitle>
+                    <SingleCardBrend id={item.id}>{item.brand}</SingleCardBrend>
                   </Box>
                 </SingleCardLeftLeft>
+
                 <SingleCardLeftRight>
                   <SingleCardBtnsWrapper>
-                    <SingleCardBtnCount1
-                      id={item.id}
-                      onClick={() => setCount(count - 1)}
-                    >
-                      -
-                    </SingleCardBtnCount1>
-                    <SingleCardBtnContent>{2}</SingleCardBtnContent>
-                    <SingleCardBtnCount2 id={item.id} onClick={handleIncrement}>
-                      +
-                    </SingleCardBtnCount2>
+                    <SingleCardBtnCount1 id={item.id}>-</SingleCardBtnCount1>
+                    <SingleCardBtnContent>{1}</SingleCardBtnContent>
+                    <SingleCardBtnCount2 id={item.id}>+</SingleCardBtnCount2>
                   </SingleCardBtnsWrapper>
 
                   <Box>
@@ -122,7 +123,10 @@ export const SingleCard = () => {
                       </SingleCardPrice>
                     )}
                     <SingleCardPrice>{item.sales_price} so'm</SingleCardPrice>
-                    <SingleCardDalete>
+                    <SingleCardDalete
+                      id={item.id}
+                      onClick={(evt) => handleDelete(evt)}
+                    >
                       <DeleteIcon fontSize="small" sx={{ mr: "6px" }} /> Удалить
                     </SingleCardDalete>
                   </Box>
@@ -131,7 +135,7 @@ export const SingleCard = () => {
             ))}
           </Box>
 
-          <SinglecardRight>
+          <SingleCardRightWrapper>
             <SingleCardRightTitle>
               В корзине {selectorBasket.length || 0} товара
             </SingleCardRightTitle>
@@ -147,7 +151,7 @@ export const SingleCard = () => {
             <SingleCardRight />
 
             <CardBtn style={style} />
-          </SinglecardRight>
+          </SingleCardRightWrapper>
         </SingleCardInInternalWrapper>
       </SingleCardInternalWrapper>
     </SingleCardWrapper>

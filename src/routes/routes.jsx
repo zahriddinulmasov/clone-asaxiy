@@ -5,6 +5,7 @@ import Home from "../pages/home/home";
 import { ProductPage } from "../pages/productPage/productPage";
 import { SingleCard } from "../pages/singleCard/singleCard";
 import { LayoutMenu } from "../layoutMenu/layoutMenu";
+import { FavoriteCart } from "../pages/favoriteCart/favoriteCart";
 
 export const AppRoutes = () => {
   useSelector((state) => state.commonInfo.slug);
@@ -19,8 +20,8 @@ export const AppRoutes = () => {
 
         <Route path="/products/:id" element={<ProductPage />} />
 
-        <Route path={`/product/basket`} element={<SingleCard />} />
-        <Route path="/product/heart" element={<SingleCard />} />
+        <Route path="/product/basket" element={<SingleCard />} />
+        <Route path="/product/heart" element={<FavoriteCart />} />
 
         <Route path={"*"} element={<h1>404 not fount</h1>} />
       </Route>

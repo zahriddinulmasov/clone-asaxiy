@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   InternalWrapper,
@@ -33,8 +32,10 @@ import { CardBtn } from "../../components/cardBtn/cardBtn";
 import { Loading } from "../../components/loading/loading";
 
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { mainInfoActions } from "../../store/commonData";
 
 const styleBasket = {
+  padding: "20px",
   marginRight: "12px",
   height: "25px",
   title: "Add to basket",
@@ -44,6 +45,7 @@ const styleBasket = {
 };
 
 const styleBuy = {
+  padding: "20px",
   height: "25px",
   title: "Buy in 1 click",
   backgroundColor: "#fff",
@@ -56,30 +58,49 @@ const styleDesc = {
   padding: "30px",
 };
 
+let basketArr = JSON.parse(window.localStorage.getItem("basket")) || [];
+
 export const ProductPage = () => {
   // const [value, setValue] = useState(4);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const dispatch = useDispatch();
   const params = useParams();
   let selector = useSelector((state) => state.commonInfo.singleData);
 
+  let commonData = useSelector((state) => state.commonInfo.data);
+  let selectorSelected =
+    useSelector((state) => state.commonInfo.basket) || basketArr;
 
-  useEffect(() => {
-    if (selector.name) {
-      setData(selector);
-      setLoading(false);
-    }
-  }, [selector]);
+    const handleBasket = (evt) => {
+      let count1 = 0;
+      const currentData = commonData.find((item) => item.id === evt.target.id * 1);
 
-  // console.log(data.attributes);
-  return (
-    <>
+      selectorSelected.forEach((item) => {
+        if (item.id === currentData.id) {
+          return count1++;
+        }
+      });
+
+      if (count1 === 0) {
+        selectorSelected = [currentData, ...selectorSelected];
+        dispatch(mainInfoActions.infoBasket(selectorSelected));
+        window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+      } else {
+        const currentSelectorSelected = selectorSelected.filter(
+          (item) => item.id !== currentData.id
+        );
+
+        selectorSelected = [...currentSelectorSelected];
+        dispatch(mainInfoActions.infoBasket(selectorSelected));
+        window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+      }
+  };
+
+        return (
+          <>
       <ApiSingleProducts product={params.id} />
 
       <Wrapper>
-        {" "}
-        {loading ? (
+        {!selector.name ? (
           <Loading />
         ) : (
           <>
@@ -87,20 +108,20 @@ export const ProductPage = () => {
               <ProductPageLeft>
                 <SingleFavoriteBorderIcon sx={{ fontSize: "60px" }} />
                 <ProductPageImg
-                  src={`https://onlineshopuchun.pythonanywhere.com/media/${data.images}`}
+                  src={`https://onlineshopuchun.pythonanywhere.com/media/${selector.images}`}
                   width="370"
                   height="370"
-                />
+                  />
               </ProductPageLeft>
 
               <ProductPageRight>
-                <ProductTitle>{data.name}</ProductTitle>
+                <ProductTitle>{selector.name}</ProductTitle>
 
                 <ProductComWrapper>
                   <Rating
                     name="half-rating"
                     precision={0.5}
-                    value={data?.ratings[0]?.average_rating || 3}
+                    value={selector?.ratings[0]?.average_rating || 3}
                     readOnly
                     sx={{ color: "#008dff" }}
                     // onChange={(event, newValue) => {
@@ -115,62 +136,73 @@ export const ProductPage = () => {
                   </ProductComLink>
                 </ProductComWrapper>
                 <Box>
-                  <ProductCardPrice>{data.price}</ProductCardPrice>
+                  <ProductCardPrice>
+                    {selector.price !== selector.sales_price
+                      ? selector.price
+                      : null}
+                  </ProductCardPrice>
 
-                  <ProductCardNewPrice>{data.sales_price}</ProductCardNewPrice>
+                  <ProductCardNewPrice>
+                    {selector.sales_price}
+                  </ProductCardNewPrice>
                 </Box>
 
                 <ProductWrapperInfo>
                   <ProductBrend>
-                    Brend: <ProductBrendName>{data.brand || "Нет информации"}</ProductBrendName>
+                    Brend:{" "}
+                    <ProductBrendName>
+                      {selector.brand || "Нет информации"}
+                    </ProductBrendName>
                   </ProductBrend>
 
                   <ProductBrend>
                     RAM:{" "}
-                      <ProductBrendName>
-                        {data.attributes[0]?.RAM ? `${data.attributes[0]?.RAM} GB` : "Нет информации"}
-                      {data.attributes[0]?.RAM}
+                    <ProductBrendName>
+                      {selector.attributes[0]?.RAM
+                        ? `${selector.attributes[0]?.RAM} GB`
+                        : "Нет информации"}
+                      {selector.attributes[0]?.RAM}
                     </ProductBrendName>
                   </ProductBrend>
 
                   <ProductBrend>
                     ROM:{" "}
                     <ProductBrendName>
-                        {data.attributes[0]?.ROM || "Нет информации"}
+                      {selector.attributes[0]?.ROM || "Нет информации"}
                     </ProductBrendName>
                   </ProductBrend>
 
                   <ProductBrend>
                     Сеть:{" "}
                     <ProductBrendName>
-                      {data.attributes[0]?.aloqa || "Нет информации"}
+                      {selector.attributes[0]?.aloqa || "Нет информации"}
                     </ProductBrendName>
                   </ProductBrend>
 
                   <ProductBrend>
                     Дисплей:{" "}
                     <ProductBrendName>
-                      {data.attributes[0]?.display || "Нет информации"}
+                      {selector.attributes[0]?.display || "Нет информации"}
                     </ProductBrendName>
                   </ProductBrend>
 
                   <ProductBrend>
                     Мощность:{" "}
                     <ProductBrendName>
-                      {data.attributes[0]?.quvvati || "Нет информации"}
+                      {selector.attributes[0]?.quvvati || "Нет информации"}
                     </ProductBrendName>
                   </ProductBrend>
 
                   <ProductBrend>
                     SIM:{" "}
                     <ProductBrendName>
-                      {data.attributes[0]?.sim || "Нет информации"}
+                      {selector.attributes[0]?.sim || "Нет информации"}
                     </ProductBrendName>
                   </ProductBrend>
                 </ProductWrapperInfo>
 
                 <ProductBtnWrapper>
-                  <CardBtn style={styleBasket} />
+                  <CardBtn style={styleBasket} selected={(evt) => handleBasket(evt)} id={selector.id} />
                   <CardBtn style={styleBuy} />
                 </ProductBtnWrapper>
               </ProductPageRight>
@@ -203,7 +235,7 @@ export const ProductPage = () => {
                 <Rating
                   name="half-rating"
                   precision={0.5}
-                  value={data?.ratings[0]?.average_rating || 3}
+                  value={selector?.ratings[0]?.average_rating || 3}
                   readOnly
                   sx={{ color: "#008dff", marginBottom: "12px" }}
                   // onChange={(event, newValue) => {
