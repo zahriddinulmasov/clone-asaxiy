@@ -171,6 +171,14 @@ export const SingleCardDalete = styled.button`
   }
 `;
 
+export const SingleCardNoProducts = styled.h2`
+  margin: 80px auto 0;
+  font-size: 24px;
+  width: 350px;
+  color: rgb(254, 115, 0);
+  text-align: center;
+`;
+
 export const SingleCardRightWrapper = styled.div`
   padding: 30px 25px;
   background-color: #fff;

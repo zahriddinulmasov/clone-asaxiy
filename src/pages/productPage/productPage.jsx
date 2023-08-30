@@ -64,15 +64,19 @@ export const ProductPage = () => {
   // const [value, setValue] = useState(4);
   const dispatch = useDispatch();
   const params = useParams();
+
   let selector = useSelector((state) => state.commonInfo.singleData);
 
-  let commonData = useSelector((state) => state.commonInfo.data);
+  // let commonData = useSelector((state) => state.commonInfo.data);
   let selectorSelected =
-    useSelector((state) => state.commonInfo.basket) || basketArr;
+  useSelector((state) => state.commonInfo.basket).length > 0 || basketArr;
+  console.log(selectorSelected[0]);
 
-    const handleBasket = (evt) => {
-      let count1 = 0;
-      const currentData = commonData.find((item) => item.id === evt.target.id * 1);
+  const handleBasket = (evt) => {
+    let count1 = 0;
+    const currentData = selectorSelected.find(
+      (item) => item.id === selector.id
+      );
 
       selectorSelected.forEach((item) => {
         if (item.id === currentData.id) {
@@ -80,23 +84,23 @@ export const ProductPage = () => {
         }
       });
 
-      if (count1 === 0) {
-        selectorSelected = [currentData, ...selectorSelected];
-        dispatch(mainInfoActions.infoBasket(selectorSelected));
-        window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
-      } else {
-        const currentSelectorSelected = selectorSelected.filter(
-          (item) => item.id !== currentData.id
-        );
+    if (count1 === 0) {
+      selectorSelected = [currentData, ...selectorSelected];
+      dispatch(mainInfoActions.infoBasket(selectorSelected));
+      window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+    } else {
+      const currentSelectorSelected = selectorSelected.filter(
+        (item) => item.id !== currentData.id
+      );
 
-        selectorSelected = [...currentSelectorSelected];
-        dispatch(mainInfoActions.infoBasket(selectorSelected));
-        window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
-      }
+      selectorSelected = [...currentSelectorSelected];
+      dispatch(mainInfoActions.infoBasket(selectorSelected));
+      window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+    }
   };
 
-        return (
-          <>
+  return (
+    <>
       <ApiSingleProducts product={params.id} />
 
       <Wrapper>
@@ -111,7 +115,7 @@ export const ProductPage = () => {
                   src={`https://onlineshopuchun.pythonanywhere.com/media/${selector.images}`}
                   width="370"
                   height="370"
-                  />
+                />
               </ProductPageLeft>
 
               <ProductPageRight>
@@ -202,7 +206,11 @@ export const ProductPage = () => {
                 </ProductWrapperInfo>
 
                 <ProductBtnWrapper>
-                  <CardBtn style={styleBasket} selected={(evt) => handleBasket(evt)} id={selector.id} />
+                  <CardBtn
+                    style={styleBasket}
+                    selected={(evt) => handleBasket(evt)}
+                    id={selector.updated_year}
+                  />
                   <CardBtn style={styleBuy} />
                 </ProductBtnWrapper>
               </ProductPageRight>

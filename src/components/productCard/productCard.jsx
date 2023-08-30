@@ -47,8 +47,8 @@ function ProductCard({ props }) {
   let selector = useSelector((state) => state.commonInfo.data);
   let selectorSelected =
     useSelector((state) => state.commonInfo.basket) || basketArr;
-
-  // console.log(basketArr);
+  let selectorHeart =
+    useSelector((state) => state.commonInfo.heart) || heartArr;
 
   function handleCard() {
     navigate(`/products/${slug}`);
@@ -83,24 +83,24 @@ function ProductCard({ props }) {
     const currentData = selector.find((item) => item.id === evt.target.id * 1);
 
     let count2 = 0;
-    heartArr.forEach((item) => {
+    selectorHeart.forEach((item) => {
       if (item.id === currentData.id) {
         return count2++;
       }
     });
 
     if (count2 === 0) {
-      heartArr = [currentData, ...heartArr];
-      dispatch(mainInfoActions.infoHeart(heartArr));
-      window.localStorage.setItem("heart", JSON.stringify(heartArr));
+      selectorHeart = [currentData, ...selectorHeart];
+      dispatch(mainInfoActions.infoHeart(selectorHeart));
+      window.localStorage.setItem("heart", JSON.stringify(selectorHeart));
     } else {
-      const currentHeartArr = heartArr.filter(
+      const currentHeartArr = selectorHeart.filter(
         (item) => item.id !== currentData.id
       );
 
-      heartArr = [...currentHeartArr];
-      dispatch(mainInfoActions.infoHeart(heartArr));
-      window.localStorage.setItem("heart", JSON.stringify(heartArr));
+      selectorHeart = [...currentHeartArr];
+      dispatch(mainInfoActions.infoHeart(selectorHeart));
+      window.localStorage.setItem("heart", JSON.stringify(selectorHeart));
     }
   }
 

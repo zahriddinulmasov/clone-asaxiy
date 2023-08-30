@@ -7,8 +7,8 @@ export const FavoriteWrapper = styled.div`
 
 export const FavoriteInternalWrapper = styled.div`
   margin: 0 auto 0;
-  padding: 50px 15px 0;
-  max-width: 1300px;
+  padding: 55px 15px 0;
+  max-width: 1100px;
   width: 100%;
 `;
 
@@ -20,25 +20,27 @@ export const FavoriteTitle = styled.h2`
   color: rgb(40, 40, 48);
 `;
 
-export const FavoriteInInternalWrapper = styled.div`
-  min-height: 265px;
-  display: flex;
-`;
-
 export const FavoriteLeft = styled.div`
   margin: 0 15px 30px 0;
   padding: 20px;
   height: 144px;
   display: flex;
+  width: 100%;
   align-items: center;
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
 `;
 
-export const FavoriteLeftLeft = styled.a`
+export const FavoriteLeftWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  max-width: 850px;
+  width: 100%;
+`;
+
+export const FavoriteLeftLink = styled.a`
   margin-right: 10px;
-  max-width: 570px;
   width: 100%;
   text-decoration: none;
   display: flex;
@@ -86,87 +88,42 @@ export const FavoriteBrend = styled.span`
 `;
 
 export const FavoriteLeftRight = styled.div`
-  width: 348px;
+  min-width: 200px;
+  padding: 16px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 `;
 
-export const FavoriteBtnsWrapper = styled.div`
-  margin-right: 12px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
-`;
-
-export const FavoriteBtnCount1 = styled.button`
-  padding: 5px 8px;
-  font-weight: 600;
-  border-radius: 5px 0 0 5px;
-  border: none;
-  background-color: #008dff;
-  color: white;
-  cursor: pointer;
-
-  :hover {
-    background-color: royalblue;
-  }
-`;
-
-export const FavoriteBtnCount2 = styled.button`
-  padding: 5px 8px;
-  font-weight: 600;
-  border-radius: 0 5px 5px 0;
-  border: none;
-  background-color: #008dff;
-  color: white;
-  cursor: pointer;
-
-  :hover {
-    background-color: royalblue;
-  }
-`;
-
-export const FavoriteBtnContent = styled.span`
-  padding: 4px 8px;
-  display: inline-block;
-  width: 74px;
-  text-align: center;
+export const FavoriteLeftSalesPrice = styled.span`
+  font-size: 14px;
   line-height: 20px;
-  font-weight: 500;
-  color: rgb(40, 40, 48);
-  background-color: #fff;
+  text-decoration-line: line-through;
+  font-weight: 600;
+  color: #af5679;
 `;
 
-export const FavoritePrice = styled.span`
-  margin-bottom: 4px;
-  font-weight: 500;
-  font-size: 13px;
-  /* color: red; */
-  text-decoration-line: ${({ textLine }) => (textLine ? textLine : "")};
-  color: ${({ color }) => color || "rgb(40, 40, 48)"};
-  display: block;
+export const FavoriteLeftPrice = styled.span`
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #141821;
 `;
 
-export const FavoriteDalete = styled.button`
-  padding: 2px 8px;
-  font-weight: 500;
-  font-size: 13px;
-  border: none;
-  background-color: inherit;
-  color: #fe7300;
+export const FavoriteBtnWrapper = styled.div`
+  max-width: 200px;
+  width: 100%;
+`;
+
+export const FavoriteNoFavorite = styled.div`
+margin: 80px auto ;
+  font-size: 24px;
+  width: 350px;
+  color: rgb(254, 115, 0);
+  font-weight: 600;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  border: 1px solid #fe7300;
-  border-radius: 4px;
-  transition: ease 0.3s;
-  cursor: pointer;
-
-  :hover {
-    transition: ease 0.3s;
-    background-color: #fe7300;
-    color: #fff;
-  }
+  text-align: center;
 `;
+
+export const FavoriteNoFavoriteImg = styled.img``;

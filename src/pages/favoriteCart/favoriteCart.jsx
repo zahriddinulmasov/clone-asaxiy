@@ -1,126 +1,178 @@
 import { useDispatch, useSelector } from "react-redux";
-
-import { Box } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { mainInfoActions } from "../../store/commonData";
+import { CardBtn } from "../../components/cardBtn/cardBtn";
+
 import {
   FavoriteBrend,
-  FavoriteBtnContent,
-  FavoriteBtnCount1,
-  FavoriteBtnCount2,
-  FavoriteBtnsWrapper,
-  FavoriteDalete,
+  FavoriteBtnWrapper,
   FavoriteImg,
   FavoriteImgWrapper,
-  FavoriteInInternalWrapper,
   FavoriteInternalWrapper,
   FavoriteLeft,
-  FavoriteLeftLeft,
+  FavoriteLeftLink,
+  FavoriteLeftPrice,
   FavoriteLeftRight,
+  FavoriteLeftSalesPrice,
   FavoriteLeftTitle,
-  FavoritePrice,
+  FavoriteLeftWrapper,
+  FavoriteNoFavorite,
+  FavoriteNoFavoriteImg,
   FavoriteTitle,
   FavoriteWrapper,
 } from "./favoriteCart.styles";
+
+import { Box } from "@mui/material";
+import noFavorite from "../../assets/images/heart-bubble.svg";
+
+const style_add = {
+  height: "20px",
+  maxWidth: "285px",
+  title: "Добавить в корзину",
+  backgroundColor: "#008dff",
+  color: "#fff",
+};
+
+const style_delete = {
+  height: "20px",
+  maxWidth: "285px",
+  title: "Удалить",
+  backgroundColor: "#fe7300",
+  color: "#fff",
+};
 
 export const FavoriteCart = () => {
   const dispatch = useDispatch();
 
   let basketProducts = JSON.parse(window.localStorage.getItem("basket")) || [];
-  // const heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
+  let heartProducts = JSON.parse(window.localStorage.getItem("heart")) || [];
 
   let selectorBasket =
     useSelector((state) => state.commonInfo.basket) !== null
       ? basketProducts
       : [];
 
-  // let totalPriceBasket = selectorBasket.reduce(
-  //   (acc, item) => acc + item.sales_price,
-  //   0
-  // );
+  let selectorHeart =
+    useSelector((state) => state.commonInfo.heart) !== null
+      ? heartProducts
+      : [];
 
-  // let totalPrice = [...totalPriceBasket.toString()];
-  // let commonPrice = [
-  //   totalPrice.slice(0, totalPrice.length - 6).join(""),
-  //   totalPrice.slice(totalPrice.length - 6, totalPrice.length - 3).join(""),
-  //   totalPrice.slice(totalPrice.length - 3, totalPrice.length).join(""),
-  // ];
-
-  function handleDelete(evt) {
-    const currentProduct = selectorBasket.find(
+  function handleAdd(evt) {
+    const currentProduct = selectorHeart.find(
       (item) => item.id === evt.target.id * 1
     );
-    const deletedCard = selectorBasket.filter(
+
+
+    if (selectorBasket.length === 0) {
+      selectorBasket = [currentProduct];
+
+      window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
+      dispatch(mainInfoActions.infoBasket(...selectorBasket));
+    } else if (selectorBasket.length > 0) {
+      const checkedCurrentProduct = selectorBasket.find(
+        (item) => item.id === currentProduct.id
+      );
+
+      if (!checkedCurrentProduct) {
+        selectorBasket = [...selectorBasket, currentProduct];
+
+        window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
+        dispatch(mainInfoActions.infoBasket(...selectorBasket));
+        console.log(checkedCurrentProduct);
+      }
+
+      if (checkedCurrentProduct) {
+        const addCard = selectorBasket.filter(
+          (item) => item.id !== checkedCurrentProduct.id
+        );
+
+        selectorBasket = { ...addCard };
+
+        window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
+        dispatch(mainInfoActions.infoBasket(...selectorBasket));
+      }
+    }
+
+
+    // else {
+
+    // }
+    // console.log(checkedCurrentProduct);
+  }
+
+  function handleDelete(evt) {
+    const currentProduct = selectorHeart.find(
+      (item) => item.id === evt.target.id * 1
+    );
+    const deletedCard = selectorHeart.filter(
       (item) => item.id !== currentProduct.id
     );
 
     if (currentProduct) {
-      selectorBasket = [...deletedCard];
+      selectorHeart = [...deletedCard];
 
-      window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
-      dispatch(mainInfoActions.infoBasket(...selectorBasket));
+      window.localStorage.setItem("heart", JSON.stringify(selectorHeart));
+      dispatch(mainInfoActions.infoHeart(...selectorHeart));
     }
   }
-
-  // let selectorHeart =
-  //   useSelector((state) => state.commonInfo.heart) !== null
-  //     ? heartProducts
-  //     : [];
-
-  // let totalPriceHeart = selectorHeart.reduce(
-  //   (acc, item) => acc + item.sales_price,
-  //   0
-  // );
 
   return (
     <FavoriteWrapper>
       <FavoriteInternalWrapper>
-        <FavoriteTitle>Избранное</FavoriteTitle>
+        <FavoriteTitle>Избранное ({selectorHeart.length})</FavoriteTitle>
 
-        <FavoriteInInternalWrapper>
-          <Box sx={{ width: "75%" }}>
-            {selectorBasket.map((item) => (
-              <FavoriteLeft key={item.id}>
-                <FavoriteLeftLeft>
+        {selectorHeart.length > 0 ? (
+          selectorHeart.map((item) => (
+            <FavoriteLeft key={item.id}>
+              <FavoriteLeftWrapper>
+                <FavoriteLeftLink>
                   <FavoriteImgWrapper>
                     <FavoriteImg
                       src={item.product_image[0].image}
                       height={104}
+                      width={104}
                     />
                   </FavoriteImgWrapper>
 
-                  <Box>
-                    <FavoriteLeftTitle>{item.name}</FavoriteLeftTitle>
-                    <FavoriteBrend>{item.brand}</FavoriteBrend>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    }}
+                  >
+                    <Box>
+                      <FavoriteLeftTitle>{item.name}</FavoriteLeftTitle>
+                      <FavoriteBrend>{item.brand}</FavoriteBrend>
+                    </Box>
                   </Box>
-                </FavoriteLeftLeft>
+                </FavoriteLeftLink>
 
                 <FavoriteLeftRight>
-                  <FavoriteBtnsWrapper>
-                    <FavoriteBtnCount1 id={item.id}>-</FavoriteBtnCount1>
-                    <FavoriteBtnContent>{1}</FavoriteBtnContent>
-                    <FavoriteBtnCount2 id={item.id}>+</FavoriteBtnCount2>
-                  </FavoriteBtnsWrapper>
-
-                  <Box>
-                    {item.price !== item.sales_price && (
-                      <FavoritePrice textLine="line-through" color="#fe7300">
-                        {item.price} so'm
-                      </FavoritePrice>
-                    )}
-                    <FavoritePrice>{item.sales_price} so'm</FavoritePrice>
-                    <FavoriteDalete
-                      id={item.id}
-                      onClick={(evt) => handleDelete(evt)}
-                    >
-                      <DeleteIcon fontSize="small" sx={{ mr: "6px" }} /> Удалить
-                    </FavoriteDalete>
-                  </Box>
+                  {item.sales_price !== item.price && (
+                    <FavoriteLeftSalesPrice>
+                      {item.sales_price} сум
+                    </FavoriteLeftSalesPrice>
+                  )}
+                  <FavoriteLeftPrice>{item.price} сум</FavoriteLeftPrice>
                 </FavoriteLeftRight>
-              </FavoriteLeft>
-            ))}
-          </Box>
-        </FavoriteInInternalWrapper>
+              </FavoriteLeftWrapper>
+
+              <FavoriteBtnWrapper>
+                <CardBtn style={style_add} selected={handleAdd} id={item.id} />
+                <CardBtn
+                  style={style_delete}
+                  selected={handleDelete}
+                  id={item.id}
+                />
+              </FavoriteBtnWrapper>
+            </FavoriteLeft>
+          ))
+        ) : (
+          <FavoriteNoFavorite>
+            <FavoriteNoFavoriteImg src={noFavorite} />
+            Пока нет любимых продуктов
+          </FavoriteNoFavorite>
+        )}
       </FavoriteInternalWrapper>
     </FavoriteWrapper>
   );

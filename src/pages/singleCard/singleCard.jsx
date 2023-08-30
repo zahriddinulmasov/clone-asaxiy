@@ -1,4 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { CardBtn } from "../../components/cardBtn/cardBtn";
+import { mainInfoActions } from "../../store/commonData";
+
 import {
   SingleCardBrend,
   SingleCardBtnContent,
@@ -21,12 +25,11 @@ import {
   SingleCardTitle,
   SingleCardWrapper,
   SingleCardRightWrapper,
+  SingleCardNoProducts,
 } from "./singleCard.styles";
-import { CardBtn } from "../../components/cardBtn/cardBtn";
+
 import { Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { mainInfoActions } from "../../store/commonData";
-import { useNavigate } from "react-router-dom";
 
 const style = {
   height: "20px",
@@ -37,7 +40,7 @@ const style = {
 };
 
 export const SingleCard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   let basketProducts = JSON.parse(window.localStorage.getItem("basket")) || [];
@@ -72,67 +75,78 @@ export const SingleCard = () => {
 
       window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
       dispatch(mainInfoActions.infoBasket(...selectorBasket));
-
-      if (selectorBasket.length === 0) window.localStorage.clear("basket");
     }
   }
 
   function clicktedCard(evt) {
-    const faundData = selectorBasket.find(item => item.id === evt.target.id * 1)
-    console.log(faundData);
-    navigate(`/products/${faundData.slug}`)
+    const faundData = selectorBasket.find(
+      (item) => item.id === evt.target.id * 1
+    );
+    navigate(`/products/${faundData.slug}`);
   }
 
   return (
     <SingleCardWrapper>
       <SingleCardInternalWrapper>
-        <SingleCardTitle>Корзинка</SingleCardTitle>
+        <SingleCardTitle>Корзинка ({selectorBasket.length})</SingleCardTitle>
 
         <SingleCardInInternalWrapper>
           <Box sx={{ width: "75%" }}>
-            {selectorBasket.map((item) => (
-              <SingleCardLeft key={item.id}>
-                <SingleCardLeftLeft onClick={clicktedCard} id={item.id}>
-                  <SingleCardImgWrapper id={item.id}>
-                    <SingleCardImg
-                      id={item.id}
-                      src={item.product_image[0].image}
-                      height={104}
-                    />
-                  </SingleCardImgWrapper>
+            {selectorBasket.length > 0 ? (
+              selectorBasket.map((item) => (
+                <SingleCardLeft key={item.id}>
+                  <SingleCardLeftLeft onClick={clicktedCard} id={item.id}>
+                    <SingleCardImgWrapper id={item.id}>
+                      <SingleCardImg
+                        id={item.id}
+                        src={item.product_image[0].image}
+                        height={104}
+                      />
+                    </SingleCardImgWrapper>
 
-                  <Box  id={item.id}>
-                    <SingleCardLeftTitle id={item.id}>
-                      {item.name}
-                    </SingleCardLeftTitle>
-                    <SingleCardBrend id={item.id}>{item.brand}</SingleCardBrend>
-                  </Box>
-                </SingleCardLeftLeft>
+                    <Box id={item.id}>
+                      <SingleCardLeftTitle id={item.id}>
+                        {item.name}
+                      </SingleCardLeftTitle>
+                      <SingleCardBrend id={item.id}>
+                        {item.brand}
+                      </SingleCardBrend>
+                    </Box>
+                  </SingleCardLeftLeft>
 
-                <SingleCardLeftRight>
-                  <SingleCardBtnsWrapper>
-                    <SingleCardBtnCount1 id={item.id}>-</SingleCardBtnCount1>
-                    <SingleCardBtnContent>{1}</SingleCardBtnContent>
-                    <SingleCardBtnCount2 id={item.id}>+</SingleCardBtnCount2>
-                  </SingleCardBtnsWrapper>
+                  <SingleCardLeftRight>
+                    <SingleCardBtnsWrapper>
+                      <SingleCardBtnCount1 id={item.id}>-</SingleCardBtnCount1>
+                      <SingleCardBtnContent>{1}</SingleCardBtnContent>
+                      <SingleCardBtnCount2 id={item.id}>+</SingleCardBtnCount2>
+                    </SingleCardBtnsWrapper>
 
-                  <Box>
-                    {item.price !== item.sales_price && (
-                      <SingleCardPrice textLine="line-through" color="#fe7300">
-                        {item.price} so'm
-                      </SingleCardPrice>
-                    )}
-                    <SingleCardPrice>{item.sales_price} so'm</SingleCardPrice>
-                    <SingleCardDalete
-                      id={item.id}
-                      onClick={(evt) => handleDelete(evt)}
-                    >
-                      <DeleteIcon fontSize="small" sx={{ mr: "6px" }} /> Удалить
-                    </SingleCardDalete>
-                  </Box>
-                </SingleCardLeftRight>
-              </SingleCardLeft>
-            ))}
+                    <Box>
+                      {item.price !== item.sales_price && (
+                        <SingleCardPrice
+                          textLine="line-through"
+                          color="#fe7300"
+                        >
+                          {item.price} so'm
+                        </SingleCardPrice>
+                      )}
+                      <SingleCardPrice>{item.sales_price} so'm</SingleCardPrice>
+                      <SingleCardDalete
+                        id={item.id}
+                        onClick={(evt) => handleDelete(evt)}
+                      >
+                        <DeleteIcon fontSize="small" sx={{ mr: "6px" }} />{" "}
+                        Удалить
+                      </SingleCardDalete>
+                    </Box>
+                  </SingleCardLeftRight>
+                </SingleCardLeft>
+              ))
+            ) : (
+              <SingleCardNoProducts>
+                Корзина на данный момент пуста!
+              </SingleCardNoProducts>
+            )}
           </Box>
 
           <SingleCardRightWrapper>
