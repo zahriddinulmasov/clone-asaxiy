@@ -4,7 +4,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export const Wrapper = styled.div`
   margin: 0 auto;
-  padding: 80px 15px 30px 15px;
+  padding: 90px 15px 30px 15px;
   max-width: 1300px;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
@@ -32,11 +32,21 @@ export const ProductPageImg = styled.img`
   margin: 0 auto;
 `;
 
-export const SingleFavoriteBorderIcon = styled(FavoriteBorderIcon)`
-  padding: 10px;
+export const SingleFavoriteBtnIcon = styled.button`
   position: absolute;
   right: 20px;
   top: 20px;
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+  border-radius: 50%;
+`;
+
+export const SingleFavoriteBorderIcon = styled(FavoriteBorderIcon)`
+  padding: 10px;
+  /* position: absolute;
+  right: 20px;
+  top: 20px; */
   z-index: 2;
   background: aliceblue;
   border-radius: 50%;
@@ -113,6 +123,41 @@ export const ProductBtnWrapper = styled.div`
   margin-bottom: 16px;
   display: flex;
   align-items: center;
+`;
+
+export const ProductBtnLike = styled.button`
+  margin: 12px 0 0 12px;
+  padding: 8px 16px;
+  background-color: #fff;
+  box-shadow: 0px 4px 32px rgba(51, 51, 51, 0.08);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+  line-height: 20px;
+  border: none;
+  transition: all 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  :hover {
+    color: rgb(254, 115, 0);
+  }
+`;
+
+export const ProductBtnImg = styled.img`
+  margin-right: 6px;
+  width: 22px;
+`;
+
+export const ProductBtnCount = styled.span`
+  margin-left: 8px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  /* margin-top: 8px; */
+  color: #008dff;
+  background: rgba(0, 141, 255, 0.12);
 `;
 
 export const ProductDescWrapper = styled.div`

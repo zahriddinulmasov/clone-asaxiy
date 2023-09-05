@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,26 +24,23 @@ import {
   ProductDescWrapper,
   ProductCommitTitle,
   ProductCommitInterWrapper,
+  SingleFavoriteBtnIcon,
+  ProductBtnLike,
+  // ProductBtnImg,
+  ProductBtnCount,
 } from "./productPage.styles";
-import { Box, Rating } from "@mui/material";
 
 import { ApiSingleProducts } from "../../API/api";
 import { Comment } from "../../assets/images/icons";
 import { CardBtn } from "../../components/cardBtn/cardBtn";
 import { Loading } from "../../components/loading/loading";
-
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { mainInfoActions } from "../../store/commonData";
+import basket from "../../assets/images/basket.svg";
+// import like from "../../assets/images/like.svg"
 
-const styleBasket = {
-  padding: "20px",
-  marginRight: "12px",
-  height: "25px",
-  title: "Add to basket",
-  backgroundColor: "#fe7300",
-  color: "#fff",
-  icon: <ShoppingBasketIcon style={{ marginRight: "6px" }} />,
-};
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+
+import { Box, Rating } from "@mui/material";
 
 const styleBuy = {
   padding: "20px",
@@ -59,48 +57,99 @@ const styleDesc = {
 };
 
 let basketArr = JSON.parse(window.localStorage.getItem("basket")) || [];
+let heartArr = JSON.parse(window.localStorage.getItem("heart")) || [];
 
 export const ProductPage = () => {
-  // const [value, setValue] = useState(4);
+  const [like, setLike] = useState(0);
   const dispatch = useDispatch();
   const params = useParams();
 
   let selector = useSelector((state) => state.commonInfo.singleData);
 
-  // let commonData = useSelector((state) => state.commonInfo.data);
-  let selectorSelected =
-  useSelector((state) => state.commonInfo.basket).length > 0 || basketArr;
-  console.log(selectorSelected[0]);
+  let selectorBasket = useSelector((state) => state.commonInfo.basket);
+  let selectorHeart = useSelector((state) => state.commonInfo.heart);
 
-  const handleBasket = (evt) => {
-    let count1 = 0;
-    const currentData = selectorSelected.find(
-      (item) => item.id === selector.id
-      );
+  let selectorBasket2 = selectorBasket.length > 0 ? selectorBasket : basketArr;
+  let selectorHeart2 = selectorHeart.length > 0 ? selectorHeart : heartArr;
 
-      selectorSelected.forEach((item) => {
+  const handleHeart = (evt) => {
+    let count = 0;
+    const currentData = selectorHeart2.find(
+      (item) => item.id === evt.target.id * 1
+    );
+
+    if (currentData) {
+      selectorHeart2.forEach((item) => {
         if (item.id === currentData.id) {
-          return count1++;
+          return count++;
         }
       });
+    }
 
-    if (count1 === 0) {
-      selectorSelected = [currentData, ...selectorSelected];
-      dispatch(mainInfoActions.infoBasket(selectorSelected));
-      window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+    if (count === 0) {
+      selectorHeart2 = [selector, ...selectorHeart2];
+
+      dispatch(mainInfoActions.infoHeart(selectorHeart2));
+      window.localStorage.setItem("heart", JSON.stringify(selectorHeart2));
     } else {
-      const currentSelectorSelected = selectorSelected.filter(
+      const currentSelectorHeart = selectorHeart2.filter(
         (item) => item.id !== currentData.id
       );
 
-      selectorSelected = [...currentSelectorSelected];
-      dispatch(mainInfoActions.infoBasket(selectorSelected));
-      window.localStorage.setItem("basket", JSON.stringify(selectorSelected));
+      console.log(currentSelectorHeart);
+      selectorHeart2 = [...currentSelectorHeart];
+      dispatch(mainInfoActions.infoHeart(selectorHeart2));
+      window.localStorage.setItem("heart", JSON.stringify(selectorHeart2));
     }
   };
 
+  const handleBasket = (evt) => {
+    let count = 0;
+    const currentData = selectorBasket2.find(
+      (item) => item.id === evt.target.id * 1
+    );
+
+    if (currentData) {
+      selectorBasket2.forEach((item) => {
+        if (item.id === currentData.id) {
+          return count++;
+        }
+      });
+    }
+
+    if (count === 0) {
+      selectorBasket2 = [selector, ...selectorBasket2];
+
+      dispatch(mainInfoActions.infoBasket(selectorBasket2));
+      window.localStorage.setItem("basket", JSON.stringify(selectorBasket2));
+    } else {
+      const currentSelectorBasket = selectorBasket2.filter(
+        (item) => item.id !== currentData.id
+      );
+
+      selectorBasket2 = [...currentSelectorBasket];
+      dispatch(mainInfoActions.infoBasket(selectorBasket2));
+      window.localStorage.setItem("basket", JSON.stringify(selectorBasket2));
+    }
+  };
+
+  const styleBasket = {
+    padding: "20px",
+    marginRight: "12px",
+    height: "25px",
+    title: "Add to basket",
+    backgroundColor: "#fe7300",
+    color: "#fff",
+    img: basket,
+    id: selector.id,
+  };
+
+  function handleLike() {
+    setLike(like + 1)
+  }
+
   return (
-    <>
+    <Box sx={{ backgroundColor: "#f4f7fd" }}>
       <ApiSingleProducts product={params.id} />
 
       <Wrapper>
@@ -110,7 +159,16 @@ export const ProductPage = () => {
           <>
             <InternalWrapper>
               <ProductPageLeft>
-                <SingleFavoriteBorderIcon sx={{ fontSize: "60px" }} />
+                <SingleFavoriteBtnIcon
+                  onClick={(evt) => handleHeart(evt)}
+                  id={selector.id}
+                >
+                  <SingleFavoriteBorderIcon
+                    sx={{ fontSize: "60px" }}
+                    id={selector.id}
+                  />
+                </SingleFavoriteBtnIcon>
+
                 <ProductPageImg
                   src={`https://onlineshopuchun.pythonanywhere.com/media/${selector.images}`}
                   width="370"
@@ -209,9 +267,15 @@ export const ProductPage = () => {
                   <CardBtn
                     style={styleBasket}
                     selected={(evt) => handleBasket(evt)}
-                    id={selector.updated_year}
+                    id={selector.id}
                   />
                   <CardBtn style={styleBuy} />
+
+                  <ProductBtnLike onClick={handleLike}>
+                    {/* <ThumbUpIcon src={like} alt="photo like icon" width={22} /> */}
+                    <ThumbUpIcon sx={{ mr: "6px" }} />Я рекомендую
+                    <ProductBtnCount>{like}</ProductBtnCount>
+                  </ProductBtnLike>
                 </ProductBtnWrapper>
               </ProductPageRight>
             </InternalWrapper>
@@ -262,6 +326,6 @@ export const ProductPage = () => {
           </>
         )}
       </Wrapper>
-    </>
+    </Box>
   );
 };

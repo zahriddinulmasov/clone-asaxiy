@@ -36,7 +36,8 @@ export const SingleCardLeft = styled.div`
   box-shadow: 0 10px 30px rgba(209, 213, 223, 0.5);
 `;
 
-export const SingleCardLeftLeft = styled.div`
+export const SingleCardLeftLeft = styled.a`
+text-decoration: none;
   margin-right: 10px;
   max-width: 570px;
   width: 100%;

@@ -61,7 +61,6 @@ export const FavoriteCart = () => {
       (item) => item.id === evt.target.id * 1
     );
 
-
     if (selectorBasket.length === 0) {
       selectorBasket = [currentProduct];
 
@@ -77,7 +76,6 @@ export const FavoriteCart = () => {
 
         window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
         dispatch(mainInfoActions.infoBasket(...selectorBasket));
-        console.log(checkedCurrentProduct);
       }
 
       if (checkedCurrentProduct) {
@@ -85,13 +83,12 @@ export const FavoriteCart = () => {
           (item) => item.id !== checkedCurrentProduct.id
         );
 
-        selectorBasket = { ...addCard };
+        selectorBasket = [...addCard];
 
         window.localStorage.setItem("basket", JSON.stringify(selectorBasket));
         dispatch(mainInfoActions.infoBasket(...selectorBasket));
       }
     }
-
 
     // else {
 
@@ -124,7 +121,7 @@ export const FavoriteCart = () => {
           selectorHeart.map((item) => (
             <FavoriteLeft key={item.id}>
               <FavoriteLeftWrapper>
-                <FavoriteLeftLink>
+                <FavoriteLeftLink href={`/products/${item.slug}`}>
                   <FavoriteImgWrapper>
                     <FavoriteImg
                       src={item.product_image[0].image}

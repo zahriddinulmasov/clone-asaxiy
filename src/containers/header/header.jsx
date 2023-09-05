@@ -23,9 +23,16 @@ import {
 
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { mainInfoActions } from "../../store/commonData";
+import { useState } from "react";
+
+const counter = JSON.parse(window.localStorage.getItem("count"));
 
 export const Header = () => {
+  const [count, setCount] = useState(counter);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const btns = [
     {
@@ -45,6 +52,25 @@ export const Header = () => {
       title: "Language",
       img: <Language />,
       isYes: false,
+      click: function handlelLang() {
+        if (count) {
+          setCount(count + 1);
+
+          if (count === 3) setCount(1);
+          window.localStorage.setItem("count", JSON.stringify(count));
+        }
+
+        if (count === 1) {
+          dispatch(mainInfoActions.replacedLang("uz"));
+          window.localStorage.setItem("lang", JSON.stringify("uz"));
+        } else if (count === 2) {
+          dispatch(mainInfoActions.replacedLang("ru"));
+          window.localStorage.setItem("lang", JSON.stringify("ru"));
+        } else {
+          dispatch(mainInfoActions.replacedLang("en"));
+          window.localStorage.setItem("lang", JSON.stringify("en"));
+        }
+      },
     },
     {
       id: 4,
@@ -52,7 +78,7 @@ export const Header = () => {
       img: <Card />,
       isYes: true,
       isBasket: true,
-      handleBasket: function handleBasket() {
+      click: function handleBasket() {
         return navigate("/product/basket");
       },
     },
@@ -62,7 +88,7 @@ export const Header = () => {
       img: <Heart />,
       isYes: true,
       isBasket: false,
-      handleHeart: function handleHeart() {
+      click: function handleHeart() {
         return navigate("/product/heart");
       },
     },

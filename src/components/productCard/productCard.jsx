@@ -1,14 +1,15 @@
 import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import { Box, Rating } from "@mui/material";
 
 import {
+  CardBottomBtn,
   CardDescription,
   CardIconsWrapper,
   CardImg,
   CardImgWrapper,
+  CardLink,
   CardNewPrice,
   CardPrice,
   CardWrapper,
@@ -28,7 +29,7 @@ import heartIcon from "../../assets/images/heart2.svg";
 
 const style = {
   height: "20px",
-  title: "Buy in 1 click",
+  title: "Купить в 1 клик ",
   backgroundColor: "#008dff",
   color: "#fff",
 };
@@ -39,7 +40,6 @@ let heartArr = JSON.parse(window.localStorage.getItem("heart")) || [];
 function ProductCard({ props }) {
   const { average_rating, product_image, sales_price, name, slug, price, id } =
     props;
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const img = product_image[0]?.image;
@@ -49,10 +49,6 @@ function ProductCard({ props }) {
     useSelector((state) => state.commonInfo.basket) || basketArr;
   let selectorHeart =
     useSelector((state) => state.commonInfo.heart) || heartArr;
-
-  function handleCard() {
-    navigate(`/products/${slug}`);
-  }
 
   const handleBasket = (evt) => {
     let count1 = 0;
@@ -123,14 +119,14 @@ function ProductCard({ props }) {
           />
         </CardIconsWrapper>
 
-        <Box onClick={handleCard}>
+        <CardLink href={`/products/${slug}`}>
           <CardImgWrapper sx={{ textAlign: "center" }}>
             <CardImg
               // id={ }
               src={img || `https://picsum.photos/230/160`}
               alt="https://picsum.photos/230/160"
               height="160"
-              width="auto"
+              width="160"
             />
           </CardImgWrapper>
 
@@ -158,9 +154,11 @@ function ProductCard({ props }) {
             <CardPrice>{price !== sales_price ? `${price} som` : ""}</CardPrice>
             <CardNewPrice>{sales_price} com</CardNewPrice>
           </Box>
+        </CardLink>
 
+        <CardBottomBtn>
           <CardBtn style={style} />
-        </Box>
+        </CardBottomBtn>
       </CardWrapper>
     </>
   );

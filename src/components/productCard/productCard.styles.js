@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CardWrapper = styled.div`
   margin: 9px;
-  padding: 15px;
+  padding: 15px 15px 59px;
   width: 237px;
   height: fit-content;
   background-color: #fff;
@@ -18,6 +18,10 @@ export const CardWrapper = styled.div`
       color: rgb(0, 141, 255);
     }
   }
+`;
+
+export const CardLink = styled.a`
+  text-decoration: none;
 `;
 
 export const CardImgWrapper = styled.div`
@@ -90,3 +94,11 @@ export const CardNewPrice = styled.span`
   line-height: 20px;
   display: block;
 `;
+
+
+export const CardBottomBtn = styled.div`
+width: 100%;
+  position: absolute;
+  bottom: 15px;
+
+`

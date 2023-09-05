@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { CardBtn } from "../../components/cardBtn/cardBtn";
 import { mainInfoActions } from "../../store/commonData";
 
@@ -40,7 +39,6 @@ const style = {
 };
 
 export const SingleCard = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   let basketProducts = JSON.parse(window.localStorage.getItem("basket")) || [];
@@ -78,13 +76,6 @@ export const SingleCard = () => {
     }
   }
 
-  function clicktedCard(evt) {
-    const faundData = selectorBasket.find(
-      (item) => item.id === evt.target.id * 1
-    );
-    navigate(`/products/${faundData.slug}`);
-  }
-
   return (
     <SingleCardWrapper>
       <SingleCardInternalWrapper>
@@ -95,11 +86,11 @@ export const SingleCard = () => {
             {selectorBasket.length > 0 ? (
               selectorBasket.map((item) => (
                 <SingleCardLeft key={item.id}>
-                  <SingleCardLeftLeft onClick={clicktedCard} id={item.id}>
+                  <SingleCardLeftLeft  href={`/products/${item.slug}`} id={item.id}>
                     <SingleCardImgWrapper id={item.id}>
                       <SingleCardImg
                         id={item.id}
-                        src={item.product_image[0].image}
+                        src={item.product_image[0].image || `https://onlineshopuchun.pythonanywhere.com/media/${item.images[0]}`}
                         height={104}
                       />
                     </SingleCardImgWrapper>

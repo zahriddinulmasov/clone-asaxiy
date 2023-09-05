@@ -23,3 +23,7 @@ export const BtnWrapper = styled.button`
     opacity: 0.8;
   }
 `;
+
+export const Img = styled.img`
+margin-right: 4px;
+`

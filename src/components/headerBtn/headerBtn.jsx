@@ -7,7 +7,7 @@ import "./headerBtn.styles";
 import { useSelector } from "react-redux";
 
 export const HeaderBtn = ({ props }) => {
-  const { img, title, isYes, isBasket, handleBasket, handleHeart } = props;
+  const { img, title, isYes, isBasket, click } = props;
 
   const StyledBadge = styled(Badge)(() => ({
     "& .MuiBadge-badge": {
@@ -38,7 +38,7 @@ export const HeaderBtn = ({ props }) => {
   return (
     <HeaderBtnWrapper
       id="header"
-      onClick={isBasket ? handleBasket : handleHeart}
+      onClick={click}
     >
       {isYes ? (
         <StyledBadge

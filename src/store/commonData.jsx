@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const name = "common";
 
+const language = JSON.parse(window.localStorage.getItem("lang"));
+
 const initialState = {
   error: null,
   info: [],
@@ -12,6 +14,7 @@ const initialState = {
   basket: [],
   heart: [],
   addBasket: null,
+  language: language
 };
 
 export const { reducer: mainInfoReducer, actions: mainInfoActions } =
@@ -42,6 +45,9 @@ export const { reducer: mainInfoReducer, actions: mainInfoActions } =
       },
       addedBasket(state, action) {
         state.addBasket = action.payload
+      },
+      replacedLang(state, action) {
+        state.language = action.payload
       }
     },
   });
