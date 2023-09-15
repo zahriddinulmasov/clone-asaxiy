@@ -22,6 +22,11 @@ export const CardWrapper = styled.div`
 
 export const CardLink = styled.a`
   text-decoration: none;
+  color: #000;
+
+  :hover{
+    color: #000;
+  }
 `;
 
 export const CardImgWrapper = styled.div`

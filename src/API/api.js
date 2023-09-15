@@ -3,17 +3,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { mainInfoActions } from "../store/commonData";
 
-const language = JSON.parse(window.localStorage.getItem("lang"));
 
 function ApiCategory() {
   const dispatch = useDispatch();
   const selector =
     useSelector((state) => state.commonInfo.language);
-  console.log(selector);
-  console.log(language);
 
-  useEffect(() => {
-    axios(`https://onlineshopuchun.pythonanywhere.com/${selector}/category`)
+    useEffect(() => {
+      axios(`https://onlineshopuchun.pythonanywhere.com/${selector}/category`)
       .then((data) => {
         dispatch(mainInfoActions.infoCategory(data.data));
       })
@@ -28,14 +25,15 @@ function ApiGetProducts({ location }) {
   const dispatch = useDispatch();
   const selector =
     useSelector((state) => state.commonInfo.language)
+  const searchSelector = useSelector(state => state.commonInfo.search)
 
   const locationDaleteSymbol = location.split("/");
   const locationFilter = locationDaleteSymbol[locationDaleteSymbol.length - 1];
 
   const productCat =
-    locationFilter.length > 1
-      ? `category/${locationFilter}/products`
-      : `products`;
+  locationFilter.length > 1
+  ? `category/${locationFilter}/products`
+  : `products${searchSelector ? `/?search=${searchSelector}` : ""}`;
 
   useEffect(() => {
     axios(
@@ -47,7 +45,7 @@ function ApiGetProducts({ location }) {
       .catch((error) => console.log(error));
 
     // eslint-disable-next-line
-  }, [locationFilter, selector]);
+  }, [productCat, selector]);
 
   return;
 }

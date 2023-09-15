@@ -28,9 +28,10 @@ export const HeaderLogoLInk = styled(Link)`
   font-style: italic;
 `;
 
-export const SearchWrapper = styled.div`
+export const SearchWrapper = styled.form`
   display: flex;
   border: 1px solid #008dff;
+  font-weight: 600;
   border-radius: 10px;
   width: 100%;
 `;

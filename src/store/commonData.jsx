@@ -14,7 +14,8 @@ const initialState = {
   basket: [],
   heart: [],
   addBasket: null,
-  language: language
+  language: language,
+  search: "",
 };
 
 export const { reducer: mainInfoReducer, actions: mainInfoActions } =
@@ -44,10 +45,13 @@ export const { reducer: mainInfoReducer, actions: mainInfoActions } =
         state.heart = action.payload;
       },
       addedBasket(state, action) {
-        state.addBasket = action.payload
+        state.addBasket = action.payload;
       },
       replacedLang(state, action) {
-        state.language = action.payload
-      }
+        state.language = action.payload;
+      },
+      mainSearch(state, action) {
+        state.search = action.payload;
+      },
     },
   });

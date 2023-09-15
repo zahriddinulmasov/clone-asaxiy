@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 export const HeaderBtn = ({ props }) => {
   const { img, title, isYes, isBasket, click } = props;
+  // console.log(title());
 
   const StyledBadge = styled(Badge)(() => ({
     "& .MuiBadge-badge": {
@@ -52,7 +53,7 @@ export const HeaderBtn = ({ props }) => {
         <StyledBadge>{img}</StyledBadge>
       )}
 
-      <HeaderBtnContent>{title}</HeaderBtnContent>
+      <HeaderBtnContent>{title.function ? title.function() : title}</HeaderBtnContent>
     </HeaderBtnWrapper>
   );
 };

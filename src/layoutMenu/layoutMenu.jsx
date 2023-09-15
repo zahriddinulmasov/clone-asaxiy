@@ -11,7 +11,7 @@ import { Box, CssBaseline, Fab, Toolbar } from "@mui/material";
 export const LayoutMenu = (props) => (
   <Box>
     <CssBaseline />
-    <Toolbar id="back-to-top-anchor">
+    <Toolbar id="back-to-top-anchor" sx={{paddingRight: "20px"}}>
       <Header />
       <Navbar />
     </Toolbar>
